@@ -1,10 +1,10 @@
 #include "FontGenerator.h"
 
 
-void FontGenerator::openFormatFile() {
+void FontGenerator::openFormatFile(string fileName) {
 	
-	string tempFileName{ "bitmap.txt" };
-	//cout << "FomatFilePath : "; cin >> tempFileName;
+	string tempFileName{ fileName };
+	
 	ifs->open(tempFileName, ios::ios_base::in);
 
 	if (!ifs) cerr << "file open error\n";
@@ -24,7 +24,7 @@ void FontGenerator::allocateFormat() /* source format */ {
 	outputRow = ROW * ROW_RATIO;
 	outputCol = COL * COL_RATIO;
 	
-	originalArray.assign(wordCount, vector<vector<char>>(ROW, vector<char>(COL, '#')));
+	originalArray.assign(wordCount, vector<vector<char>>(ROW, vector<char>(COL)));
 	enlargeArray.assign(wordCount, vector<vector<char>>(outputRow, vector<char>(outputCol, NULL)));
 
 	/*        read from file        */
@@ -91,24 +91,30 @@ void FontGenerator::rotateText() {
 
 }
 
-void toupper(string& cmd) {
-	for (char& i : cmd)
-		i = toupper(i);
+int toupper(string& cmd) {
+
+	int i = 0;
+	int size = cmd.size();
+	while(i < size){
+		if (!isalpha(cmd[i])) {
+			if (cmd[i] != 32 /* if(!space) */) {
+				cout << "not alphabet\n";
+				return -1;
+			}
+		}
+		cmd[i] = toupper(cmd[i]);
+		++i;
+	}
+	return 1;
 }
 
 
 void FontGenerator::inputFromCmd(string& cmd){
 	int cmdSize = cmd.size();
-	toupper(cmd);
+	if(toupper(cmd) < 0) return;
 	
 	int i = 0;
 	while (i < cmdSize) {
-		if (!isalpha(cmd[i])) {
-			if (cmd[i] != 32 /* if(!space) */) { 
-				cout << "not alphabet\n";
-				return;
-			}
-		}
 		printText(cmd[i]);
 		++i;
 	}

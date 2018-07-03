@@ -15,7 +15,7 @@ using namespace std;
 class FontGenerator {
 
 public:
-	void openFormatFile();
+	void openFormatFile(string fileName);
 	void allocateFormat();
 	void inputFromCmd(string&);
 	void enlargeText();
@@ -24,7 +24,7 @@ public:
 
 	void printFormat(vector<vector<vector<char> > >&); /* for debug */
 private:
-
+	string fileName{ "" };
 	vector<vector<vector<char> > > originalArray; /* from the bitmap.txt */
 	vector<vector<vector<char> > > enlargeArray;  
 	vector<vector<vector<char> > > rotateArray;  /*  result  */
@@ -33,7 +33,7 @@ private:
 	/*  total words */
 	int wordCount{ 0 };
 
-	/* source format */
+	/* source format size */
 	int rowCount{ 0 };
 	int colCount{ 0 };
 
